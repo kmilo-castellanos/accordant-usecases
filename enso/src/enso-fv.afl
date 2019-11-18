@@ -1,0 +1,34 @@
+FunctionalView UC4FV{
+  Components {  
+    Ingestor CSVReader {
+      procModel:BATCH conn:"hdfs://data/enso.csv/" format:"CSV" 
+      ports: { Port csv:PROVIDED}
+    },  
+    Estimator ENSOPredictor { 
+      //procModel:BATCH  pmml:"file:///...ElNinoPolReg.pmml"
+      procModel:BATCH  pmml:"file:///Users/kmilo/Documents/ElNinoPolReg.pmml"
+      ports:{Port ENSO_in:REQUIRED, Port ENSO_out:PROVIDED}
+    },   
+    Sink HDFSWriter {
+      procModel:BATCH conn:"hdfs://data/enso-output/" 
+      // format:"CSV"
+      ports: {Port wri_in:REQUIRED}
+    }
+  } 
+  Connectors { 
+    ProcCall callEnso { 
+      roles : {
+        Role ce_src:IN  -> csv,
+        Role ce_dst:OUT -> ENSO_in
+      } 
+    }
+    , 
+    ProcCall callWriter { 
+      roles : {
+        Role cw_src:IN  -> ENSO_out,
+        Role cw_dst:OUT -> wri_in
+      }
+    }
+  }
+    
+}

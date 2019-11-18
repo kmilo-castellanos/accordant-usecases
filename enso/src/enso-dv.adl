@@ -1,0 +1,51 @@
+DeploymentView UC4DV
+use inputPackage ensoInputs2
+use functionalView UC4FV
+	{
+	artifacts{
+		Artifact ENSOArtifact {
+			component : ENSOPredictor
+			sensitivityPoint : sp2
+		},
+		Artifact MsgBrokerArtifact {
+			connector: callEnso
+		}
+		
+	}
+	devs{
+		Device a {
+			host: "a" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device b {
+			host: "b" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device cx {
+			host: "c" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+		}
+	}
+	deployments{
+		Deployment spark_worker {
+			replicas: 3
+			pods {
+				Pod spark_workerp{ 
+					envs{
+						ExecEnv sparkw_env{
+							deployedArtifacts{
+								ENSOArtifact
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [8081]
+							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		}
+	}
+}

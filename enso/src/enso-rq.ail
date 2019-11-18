@@ -1,0 +1,29 @@
+InputPackage ensoInputs2{
+QScenarios {
+ QS QS1 {
+ 	QA:  PERFORMANCE
+ 	measure: THROUGHPUT 
+ 	minValue: 2.5 
+ 	maxValue: 3.0 
+ 	unit: MINUTES 
+ 	stimulus: "sebas" environment: "operation" 
+ }
+}
+analyzedQScenarios{
+	AQS AQS1 of QS1   {
+		reasoning :""
+		Sensitivity_Points{
+			SensitivityPoint sp2{
+				code: "132"
+				tactics 	(Distribution)
+			}
+		}		
+	}
+}
+tactics{
+	Tactic Distribution {
+		QA:  PERFORMANCE rationale: "dads" response: "dsds"
+		viewpoint: "vf"
+	}
+}
+}

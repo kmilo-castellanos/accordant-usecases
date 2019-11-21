@@ -1,0 +1,33 @@
+FunctionalView UC3FVModel
+use inputPackage UC3Inputs{
+	Components {
+		Ingestor httpRequest {
+			type : HTTP
+			procModel:MICROBATCH conn:"https://public-api.adsbexchange.com/" format:"HTTP" 
+			ports: { Port adsb:PROVIDED}
+		},
+		Estimator nmacDetector {
+		  	//procModel:BATCH  pmml:"file:///...NMAC_TModel.pmml"
+		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
+		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
+		}, 
+		Sink writer {
+		  type:DATABASE
+		  procModel:BATCH conn:"hdfs://ads-b/output/"
+		  ports: {Port wri_in:REQUIRED}  
+		}
+	}
+	Connectors {
+		ProcCall callDetect { 
+	    roles : {
+	    		Role cd_src:IN  -> adsb,
+	    		Role cd_dst:OUT -> nmac_in
+	      }
+	    },
+	    ProcCall callClust { 
+	      roles : {
+	        Role cc_src:IN  -> nmac_out
+      	}
+     }
+  }
+}  

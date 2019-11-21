@@ -1,0 +1,39 @@
+InputPackage UC3Inputs{
+	QScenarios {
+		QS UC3_QS1 {
+			QA:PERFORMANCE
+		 	stimulus: "Incoming flights data report for micro-batch detection of NMAC events" 
+		  	environment: "Normal mode"
+		  	response: "The system must predict NMAC events in less than 3 seconds"
+		 	measure: LATENCY between 0.1 and 3.0 in SECONDS
+		}
+	}
+	analyzedQScenarios{
+		AQS UC3_AQS1 of UC3_QS1   {
+			reasoning :"This QS requires to detect NMAC events from flights data (ADS-B) collected by API requests in 60 minutes"
+			Sensitivity_Points{
+				SensitivityPoint UC3_SP1{
+					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected latency"
+					code: "UC3-SP1"
+					tactics 	(IntroduceConcurrency, IncreaseAvailableResources)
+				}
+			}		
+		}
+	}
+	tactics{
+		Tactic IntroduceConcurrency {
+			QA: PERFORMANCE 
+			rationale: "If requests can be processed in parallel, the blocked time can be reduced. Concurrency can be introduced by processing different streams of events on different threads or by creating additional threads to process different sets of activities" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Functional"
+		},
+		Tactic IncreaseAvailableResources {
+			QA: PERFORMANCE 
+			rationale: "Faster processors, additional processors, additional memory, and faster networks all have the potential for reducing latency" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Deployment"
+		}
+	 }
+}

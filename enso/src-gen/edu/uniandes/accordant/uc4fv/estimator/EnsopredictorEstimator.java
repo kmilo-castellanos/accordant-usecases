@@ -33,7 +33,7 @@ public class EnsopredictorEstimator {
 		
 		JavaSparkContext sc = new JavaSparkContext(conf);
 		SparkSession sparkSession = new SparkSession(sc.sc());
-		InputStream pmmlFile = new URL("file:///Users/kmilo/Documents/ElNinoPolReg.pmml")
+		InputStream pmmlFile = new URL("file:////Users/kmilo/Documents/Desarrollo/pmml-models/ElNinoPolReg.pmml")
 						.openStream();
 		EvaluatorBuilder evaluatorBuilder = new LoadingModelEvaluatorBuilder().load(pmmlFile);
 		

@@ -1,0 +1,45 @@
+FunctionalView UC2FVModel
+use inputPackage UC2Inputs{
+	Components {
+		Ingestor JsonReader {
+			type:HDFS
+			procModel:BATCH conn:"hdfs://ads-b/input/" format:"JSON" 
+			ports: { Port adsb:PROVIDED}
+		},
+		Estimator NMAC_Detector {
+		  	//procModel:BATCH  pmml:"file:///...NMAC_TModel.pmml"
+		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
+		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
+		}, 
+		Estimator NMAC_Cluster {
+		  	//procModel:BATCH pmml:"file:///...Kmeans.pmml.pmml"
+		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACKmeans.pmml"
+		  	ports:{Port clus_in:REQUIRED, Port clus_out:PROVIDED}
+		},
+		Sink HDFSWriter {
+		  type:HDFS
+		  procModel:BATCH conn:"hdfs://ads-b/output/" format:"CSV"
+		  ports: {Port wri_in:REQUIRED}  
+		}
+	}
+	Connectors {
+		ProcCall callDetect { 
+	     roles : {
+	    		Role cd_src:IN  -> adsb,
+	    		Role cd_dst:OUT -> nmac_in
+	      }
+	    },
+	    ProcCall callClust { 
+	      roles : {
+	        Role cc_src:IN  -> nmac_out,
+	        Role cc_dst:OUT -> clus_in
+	      }
+	    },
+	    ProcCall callWriter {
+	      roles : {
+	        Role cw_src:IN  -> clus_out,
+	        Role cw_dst:OUT -> wri_in
+	    	  }
+	   }
+	}  
+}

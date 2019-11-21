@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" version="4.3">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.4.0"/>
+		<Timestamp>2019-02-25T19:48:33Z</Timestamp>
+	</Header>
+	<MiningBuildTask>
+		<Extension>PMMLPipeline(steps=[('classifier', KMeans(algorithm='auto', copy_x=True, init='k-means++', max_iter=300,
+    n_clusters=10, n_init=10, n_jobs=1, precompute_distances='auto',
+    random_state=None, tol=0.0001, verbose=0))])</Extension>
+	</MiningBuildTask>
+	<DataDictionary>
+		<DataField name="x1" optype="continuous" dataType="double"/>
+		<DataField name="x2" optype="continuous" dataType="double"/>
+		<DataField name="x3" optype="continuous" dataType="double"/>
+		<DataField name="x4" optype="continuous" dataType="double"/>
+	</DataDictionary>
+	<ClusteringModel functionName="clustering" modelClass="centerBased" numberOfClusters="10">
+		<MiningSchema>
+			<MiningField name="x1"/>
+			<MiningField name="x2"/>
+			<MiningField name="x3"/>
+			<MiningField name="x4"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="Cluster" optype="categorical" dataType="string" feature="predictedValue"/>
+			<OutputField name="affinity(0)" optype="continuous" dataType="double" feature="affinity" value="0"/>
+			<OutputField name="affinity(1)" optype="continuous" dataType="double" feature="affinity" value="1"/>
+			<OutputField name="affinity(2)" optype="continuous" dataType="double" feature="affinity" value="2"/>
+			<OutputField name="affinity(3)" optype="continuous" dataType="double" feature="affinity" value="3"/>
+			<OutputField name="affinity(4)" optype="continuous" dataType="double" feature="affinity" value="4"/>
+			<OutputField name="affinity(5)" optype="continuous" dataType="double" feature="affinity" value="5"/>
+			<OutputField name="affinity(6)" optype="continuous" dataType="double" feature="affinity" value="6"/>
+			<OutputField name="affinity(7)" optype="continuous" dataType="double" feature="affinity" value="7"/>
+			<OutputField name="affinity(8)" optype="continuous" dataType="double" feature="affinity" value="8"/>
+			<OutputField name="affinity(9)" optype="continuous" dataType="double" feature="affinity" value="9"/>
+		</Output>
+		<ComparisonMeasure kind="distance" compareFunction="absDiff">
+			<squaredEuclidean/>
+		</ComparisonMeasure>
+		<ClusteringField field="x1"/>
+		<ClusteringField field="x2"/>
+		<ClusteringField field="x3"/>
+		<ClusteringField field="x4"/>
+		<Cluster id="0" size="227">
+			<Array type="real">0.27650171311075256 0.24523184327583702 0.9999999999999997 0.2610132158590307</Array>
+		</Cluster>
+		<Cluster id="1" size="175">
+			<Array type="real">0.4348555203823094 0.44284618649418334 -2.4424906541753444E-15 0.234285714285714</Array>
+		</Cluster>
+		<Cluster id="2" size="116">
+			<Array type="real">0.8020774638008654 0.9162844529377938 1.0000000000000004 0.35775862068965525</Array>
+		</Cluster>
+		<Cluster id="3" size="75">
+			<Array type="real">0.7852132472773377 0.8771101386754847 0.4999999999999998 0.3616666666666667</Array>
+		</Cluster>
+		<Cluster id="4" size="148">
+			<Array type="real">0.2511277951533603 0.19397386378959242 0.5000000000000001 0.24070945945945935</Array>
+		</Cluster>
+		<Cluster id="5" size="299">
+			<Array type="real">0.5215087000010786 0.5235321678848276 0.9999999999999982 0.1780936454849502</Array>
+		</Cluster>
+		<Cluster id="6" size="155">
+			<Array type="real">0.463731967842439 0.48920201792231155 0.47741935483871 0.6854838709677429</Array>
+		</Cluster>
+		<Cluster id="7" size="151">
+			<Array type="real">0.4652042422985608 0.49816123116326283 1.0000000000000004 0.6903973509933785</Array>
+		</Cluster>
+		<Cluster id="8" size="46">
+			<Array type="real">0.799861725386341 0.9387944213712702 3.3306690738754696E-16 0.28532608695652173</Array>
+		</Cluster>
+		<Cluster id="9" size="277">
+			<Array type="real">0.4982911090860563 0.5094747009797098 0.5000000000000006 0.201714801444043</Array>
+		</Cluster>
+	</ClusteringModel>
+</PMML>

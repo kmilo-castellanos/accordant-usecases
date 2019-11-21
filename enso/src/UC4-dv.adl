@@ -1,16 +1,14 @@
 DeploymentView UC4DV
-use inputPackage ensoInputs2
-use functionalView UC4FV
-	{
+use inputPackage UC4Input
+use functionalView UC4FV { 
 	artifacts{
 		Artifact ENSOArtifact {
 			component : ENSOPredictor
-			sensitivityPoint : sp2
-		},
-		Artifact MsgBrokerArtifact {
+			sensitivityPoint : UC4_SP1
+		}, 
+		Artifact pCallEnsoArtifact {
 			connector: callEnso
-		}
-		
+		}	
 	}
 	devs{
 		Device a {

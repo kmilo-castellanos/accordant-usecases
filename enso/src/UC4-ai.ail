@@ -1,0 +1,39 @@
+InputPackage UC4Input{
+	QScenarios {
+		QS UC4_QS1 {
+		 	QA: PERFORMANCE
+		 	stimulus: "Scheduled job to estimate ENSO cycles for 10 years of data in batch processing" 
+		  	environment: "Normal mode"
+		  	response: "The system must estimate the ENSO cycles less than one hour"
+		 	measure: DEADLINE between 55.0 and 60.0 in MINUTES 
+		} 
+	} 
+	analyzedQScenarios{
+		AQS UC4_AQS1 of UC4_QS1 {
+			reasoning :"This QS requires to estimate the air temperature over an inmutable large dataset using batch processing in 60 minutes"
+			Sensitivity_Points{
+				SensitivityPoint UC4_SP1{
+					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline"			
+					code: "UC4-SP1"
+					tactics 	(IntroduceConcurrency,IncreaseAvailableResources)
+				}
+			}		
+		}
+	}
+	tactics{
+		Tactic IntroduceConcurrency {
+			QA: PERFORMANCE 
+			rationale: "If requests can be processed in parallel, the blocked time can be reduced. Concurrency can be introduced by processing different streams of events on different threads or by creating additional threads to process different sets of activities" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Functional"
+		},
+		Tactic IncreaseAvailableResources {
+			QA: PERFORMANCE 
+			rationale: "Faster processors, additional processors, additional memory, and faster networks all have the potential for reducing latency" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Deployment"
+		}
+	}
+}

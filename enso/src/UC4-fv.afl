@@ -7,10 +7,9 @@ use inputPackage UC4Input{
       ports: { Port csv:PROVIDED}
     }, 
     Estimator ENSOPredictor { 
-    	//pmml:"file:///path_to/ElNinoPolReg.pmml"
       procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/ElNinoPolReg.pmml"  
       sensitivityPoint: UC4_SP1 
-      ports:{Port ENSO_in:REQUIRED, Port ENSO_out:PROVIDED}
+      ports:{Port enso_in:REQUIRED, Port enso_out:PROVIDED}
     },
     Sink HDFSWriter {
     	  type: HDFS
@@ -19,16 +18,16 @@ use inputPackage UC4Input{
     } 
   }
   Connectors {
-    ProcCall callEnso {
+    ProcCall CallEnso {
       roles : { 
         Role ce_src:IN  -> csv,
-        Role ce_dst:OUT -> ENSO_in
+        Role ce_dst:OUT -> enso_in
       } 
     }
     , 
-    ProcCall callExport { 
+    ProcCall CallExport { 
       roles : {
-        Role cw_src:IN  -> ENSO_out,
+        Role cw_src:IN  -> enso_out,
         Role cw_dst:OUT -> wri_in
       }
     }

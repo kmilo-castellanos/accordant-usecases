@@ -21,13 +21,13 @@ use functionalView UC1FVModel {
 			host: "a" type:MEDIUM
 			cpu: 2 storage: 100 memory: 8
 			
-		}, 
+		},
 		Device b {
 			host: "b" type:MEDIUM
 			cpu: 2 storage: 100 memory: 8
 			
-		}, 
-		Device cx {
+		},
+		Device c {
 			host: "c" type:MEDIUM
 			cpu: 2 storage: 100 memory: 8
 		}
@@ -36,22 +36,22 @@ use functionalView UC1FVModel {
 		Deployment EstimatorDepl {
 			replicas: 3
 			pods {
-				Pod EstimatorPod{ 
+				Pod EstimatorPod{
 					envs{
 						ExecEnv EstimatorEnv{
 							deployedArtifacts{DelayArtifact}
 							image: "jpmml/openscoring"
 							cpu_req: 0.3
-							ports [8081]	
+							ports [8081]
 						}
-					} 
-				}	
+					}
+				}
 			}
 		},
 		Deployment KafkaDep {
-			replicas: 3
+			replicas: 2
 			pods {
-				Pod KafkaPod{ 
+				Pod KafkaPod{
 					envs{
 						ExecEnv KafkaEnv{
 							deployedArtifacts{InMsgArtifact,OutMsgArtifact}
@@ -59,8 +59,8 @@ use functionalView UC1FVModel {
 							cpu_req: 0.3
 							ports [9092]
 						}
-					} 
-				}	
+					}
+				}
 			}
 		}
 	}

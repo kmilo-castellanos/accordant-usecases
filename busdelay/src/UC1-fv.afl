@@ -3,18 +3,18 @@ use inputPackage UC1Input{
 	Components {
 		Ingestor HttpRequest {
 			type : HTTP
-			procModel:MICROBATCH conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
+			procModel:STREAM conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
 			format:"JSON" 
 			ports: {Port busdata:PROVIDED}
 		},
 		Estimator DelayPredictor {
-		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
+		  	procModel:STREAM  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
 		  	sensitivityPoint:UC1_SP1
 		  	ports:{Port delay_in:REQUIRED, Port delay_out:PROVIDED}
 		},
 		Sink Writer {
 		  type:DATABASE
-		  procModel:MICROBATCH conn:"mongodb://<USER>:<PASS>@<HOST>:27017/busdb"
+		  procModel:STREAM conn:"mongodb://<USER>:<PASS>@<HOST>:27017/busdb"
 		  ports: {Port wri_in:REQUIRED}  
 		}
 	}

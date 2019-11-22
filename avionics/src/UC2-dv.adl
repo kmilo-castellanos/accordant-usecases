@@ -7,10 +7,10 @@ use functionalView UC2FVModel {
 			sensitivityPoint : UC2_SP1
 		}, 
 		Artifact NMACArtifact {
-			component: NMAC_Detector
+			component: NMACDetector
 		},
 		Artifact ClusteringArtifact {
-			component: NMAC_Cluster
+			component: NMACClustering
 		},
 		Artifact WriterArtifact {
 			component: HDFSWriter

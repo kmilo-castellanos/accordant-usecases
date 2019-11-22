@@ -6,11 +6,11 @@ use inputPackage UC2Inputs{
 			procModel:BATCH conn:"hdfs://ads-b/input/" format:"JSON" 
 			ports: { Port adsb:PROVIDED}
 		},
-		Estimator NMAC_Detector {
+		Estimator NMACDetector {
 		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
 		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
 		}, 
-		Estimator NMAC_Cluster {
+		Estimator NMACClustering {
 		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACKmeans.pmml"
 		  	ports:{Port clus_in:REQUIRED, Port clus_out:PROVIDED}
 		},
@@ -21,19 +21,19 @@ use inputPackage UC2Inputs{
 		}
 	}
 	Connectors {
-		ProcCall callDetect { 
+		ProcCall CallNMACDetector { 
 	     roles : {
 	    		Role cd_src:IN  -> adsb,
 	    		Role cd_dst:OUT -> nmac_in
 	      }
 	    },
-	    ProcCall callClust { 
+	    ProcCall CallClustering { 
 	      roles : {
 	        Role cc_src:IN  -> nmac_out,
 	        Role cc_dst:OUT -> clus_in
 	      }
 	    },
-	    ProcCall callWriter {
+	    ProcCall CallWriter {
 	      roles : {
 	        Role cw_src:IN  -> clus_out,
 	        Role cw_dst:OUT -> wri_in

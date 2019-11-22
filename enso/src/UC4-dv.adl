@@ -5,9 +5,6 @@ use functionalView UC4FV {
 		Artifact ENSOArtifact {
 			component : ENSOPredictor
 			sensitivityPoint : UC4_SP1
-		}, 
-		Artifact pCallEnsoArtifact {
-			connector: callEnso
 		}	
 	}
 	devs{
@@ -27,12 +24,12 @@ use functionalView UC4FV {
 		}
 	}
 	deployments{
-		Deployment spark_worker {
+		Deployment SparkWorkerDep {
 			replicas: 3
 			pods {
-				Pod spark_workerp{ 
+				Pod SparkWPod{ 
 					envs{
-						ExecEnv sparkw_env{
+						ExecEnv SparkWEnv{
 							deployedArtifacts{
 								ENSOArtifact
 							}
@@ -40,6 +37,21 @@ use functionalView UC4FV {
 							cpu_req: 0.3
 							ports [8081]
 							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		},
+		Deployment SparkMasterDep {
+			replicas: 1
+			pods {
+				Pod SparkMPod{ 
+					envs{
+						ExecEnv SparkMEnv{
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [7077,8080]
+							commands ["/spark-master"] 
 						}
 					} 
 				}	

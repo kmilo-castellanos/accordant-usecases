@@ -7,12 +7,10 @@ use inputPackage UC2Inputs{
 			ports: { Port adsb:PROVIDED}
 		},
 		Estimator NMAC_Detector {
-		  	//procModel:BATCH  pmml:"file:///...NMAC_TModel.pmml"
 		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
 		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
 		}, 
 		Estimator NMAC_Cluster {
-		  	//procModel:BATCH pmml:"file:///...Kmeans.pmml.pmml"
 		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACKmeans.pmml"
 		  	ports:{Port clus_in:REQUIRED, Port clus_out:PROVIDED}
 		},

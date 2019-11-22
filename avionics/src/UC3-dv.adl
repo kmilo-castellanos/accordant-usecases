@@ -2,15 +2,15 @@ DeploymentView UC3DV
 use inputPackage UC3Inputs
 use functionalView UC3FVModel { 
 	artifacts{
-		Artifact readerArtifact {
-			component : httpRequest
+		Artifact ReaderArtifact {
+			component : HttpRequest
 			sensitivityPoint : UC3_SP1
 		}, 
 		Artifact NMACArtifact {
-			component: nmacDetector
+			component: NMACDetector
 		},
-		Artifact writerArtifact {
-			component: writer
+		Artifact WriterArtifact {
+			component: Writer
 		}
 	}
 	devs{
@@ -30,20 +30,38 @@ use functionalView UC3FVModel {
 		}
 	}
 	deployments{
-		Deployment spark_worker {
+		Deployment SparkWorkerDep {
 			replicas: 3
 			pods {
-				Pod spark_workerp{ 
+				Pod SparkWPod{ 
 					envs{
-						ExecEnv sparkw_env{
+						ExecEnv SparkWEnv{
 							deployedArtifacts{
-								readerArtifact,NMACArtifact, readerArtifact,
-								writerArtifact								 
+								ReaderArtifact,NMACArtifact, ReaderArtifact,
+								WriterArtifact								 
 							}
 							image: "ramhiser/spark:2.0.1"
 							cpu_req: 0.3
 							ports [8081]
 							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		},Deployment SparkMasterDep {
+			replicas: 1
+			pods {
+				Pod SparkMPod{ 
+					envs{
+						ExecEnv SparkMEnv{
+							deployedArtifacts{
+								NMACArtifact,ReaderArtifact,
+								WriterArtifact 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [7077,8080]
+							commands ["/spark-master"] 
 						}
 					} 
 				}	

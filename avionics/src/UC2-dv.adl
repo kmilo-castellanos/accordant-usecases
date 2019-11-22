@@ -2,17 +2,17 @@ DeploymentView UC2DV
 use inputPackage UC2Inputs
 use functionalView UC2FVModel { 
 	artifacts{
-		Artifact readerArtifact {
+		Artifact ReaderArtifact {
 			component : JsonReader
 			sensitivityPoint : UC2_SP1
 		}, 
 		Artifact NMACArtifact {
 			component: NMAC_Detector
 		},
-		Artifact clusteringArtifact {
+		Artifact ClusteringArtifact {
 			component: NMAC_Cluster
 		},
-		Artifact writerArtifact {
+		Artifact WriterArtifact {
 			component: HDFSWriter
 		}
 	}
@@ -33,20 +33,39 @@ use functionalView UC2FVModel {
 		}
 	}
 	deployments{
-		Deployment spark_worker {
+		Deployment SparkWorkerDep {
 			replicas: 3
 			pods {
-				Pod spark_workerp{ 
+				Pod SparkWPod{ 
 					envs{
-						ExecEnv sparkw_env{
+						ExecEnv SparkWEnv{
 							deployedArtifacts{
-								NMACArtifact,readerArtifact,
-								clusteringArtifact,writerArtifact 
+								NMACArtifact,ReaderArtifact,
+								ClusteringArtifact,WriterArtifact 
 							}
 							image: "ramhiser/spark:2.0.1"
 							cpu_req: 0.3
 							ports [8081]
 							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		},
+		Deployment SparkMasterDep {
+			replicas: 1
+			pods {
+				Pod SparkMPod{ 
+					envs{
+						ExecEnv SparkMEnv{
+							deployedArtifacts{
+								NMACArtifact,ReaderArtifact,
+								ClusteringArtifact,WriterArtifact 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [7077,8080]
+							commands ["/spark-master"] 
 						}
 					} 
 				}	

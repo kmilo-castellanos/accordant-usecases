@@ -1,0 +1,37 @@
+FunctionalView UC1FVModel
+use inputPackage UC1Input{
+	Components {
+		Ingestor HttpRequest {
+			type : HTTP
+			procModel:MICROBATCH conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
+			format:"JSON" 
+			ports: {Port busdata:PROVIDED}
+		},
+		Estimator DelayPredictor {
+		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
+		  	sensitivityPoint:UC1_SP1
+		  	ports:{Port delay_in:REQUIRED, Port delay_out:PROVIDED}
+		},
+		Sink Writer {
+		  type:DATABASE
+		  procModel:MICROBATCH conn:"mongodb://<USER>:<PASS>@<HOST>:27017/db"
+		  ports: {Port wri_in:REQUIRED}  
+		}
+	}
+	Connectors {
+		Event In_MSG {
+		props:"topic:delayin" 
+	    roles : { 
+	    		Role in_src:IN  -> busdata,
+	    		Role in_dst:OUT -> delay_in
+	      }
+	      
+	    },
+	    Event Out_MSG {
+	    	props:"topic:delayout" 	
+	      roles : {
+	        Role out_src:IN  -> wri_in
+      	}
+     }
+  }
+}  

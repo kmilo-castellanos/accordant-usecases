@@ -15,8 +15,7 @@ use inputPackage UC4Input{
     Sink HDFSWriter {
     	  type: HDFS
     	  procModel:BATCH conn:"hdfs://data/enso-output/" format:"CSV"
-      ports: {Port wri_in:REQUIRED} 
-      
+      ports: {Port wri_in:REQUIRED}
     } 
   }
   Connectors {

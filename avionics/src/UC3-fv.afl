@@ -1,30 +1,30 @@
 FunctionalView UC3FVModel
 use inputPackage UC3Inputs{
 	Components {
-		Ingestor httpRequest {
+		Ingestor HttpRequest {
 			type : HTTP
-			procModel:MICROBATCH conn:"https://public-api.adsbexchange.com/" format:"HTTP" 
+			procModel:MICROBATCH conn:"https://adsbexchange-com1.p.rapidapi.com/json/lat/40.64240788194318/lon/-73.78122048080672/dist/25/"
+			format:"JSON" 
 			ports: { Port adsb:PROVIDED}
 		},
-		Estimator nmacDetector {
-		  	//procModel:BATCH  pmml:"file:///...NMAC_TModel.pmml"
+		Estimator NMACDetector {
 		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
 		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
 		}, 
-		Sink writer {
+		Sink Writer {
 		  type:DATABASE
-		  procModel:BATCH conn:"hdfs://ads-b/output/"
-		  ports: {Port wri_in:REQUIRED}  
+		  procModel:BATCH conn:"hdfs://ads-b/output/" format:"CSV"
+		  ports: {Port wri_in:REQUIRED}
 		}
 	}
 	Connectors {
-		ProcCall callDetect { 
+		ProcCall CallDetect { 
 	    roles : {
 	    		Role cd_src:IN  -> adsb,
 	    		Role cd_dst:OUT -> nmac_in
 	      }
 	    },
-	    ProcCall callClust { 
+	    ProcCall CallClustering { 
 	      roles : {
 	        Role cc_src:IN  -> nmac_out
       	}

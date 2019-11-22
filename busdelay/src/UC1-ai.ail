@@ -1,0 +1,57 @@
+InputPackage UC1Input{
+	QScenarios {
+		QS UC1_QS1 {
+		 	QA:MODIFIABILITY
+		 	stimulus: "A new version of the predictive model trained and evaluated by the data scientist" 
+		  	environment: "Normal mode"
+		  	response: "The model must be updated in the system at runtime in 10 seconds"
+		 	measure: LATENCY between 0.1 and 10.0 in SECONDS
+		},
+		QS UC1_QS2 {
+		 	QA:PERFORMANCE
+		 	stimulus: "Incoming bus live data report from Translink data for micro-batch delay estimation" 
+		  	environment: "Normal mode"
+		  	response: "The system must estimate delay buses in less than 2 seconds"
+		 	measure: LATENCY between 0.1 and 2.0 in SECONDS
+		}
+	
+	} 
+	analyzedQScenarios{
+		AQS UC1_AQS1 of UC1_QS1 {
+			reasoning :"This QS constraint the time to update a new model version to 10 secondas in production environment"
+			Sensitivity_Points{
+				SensitivityPoint UC1_SP1{
+					rationale: "To implement a service to upgrade a model version at runtime, reduce the updating time"			
+					code: "UC1-SP1"
+					tactics 	(UseRuntimeBinding)
+				}
+			}		
+		},
+		AQS UC1_AQS2 of UC1_QS2 {
+			reasoning :"This QS limits to 2 seconds the delay estimation from buses live data"
+			Sensitivity_Points{
+				SensitivityPoint UC1_SP2{
+					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline"			
+					code: "UC1-SP1"
+					tactics 	(IncreaseAvailableResources)
+				}
+			}		
+		}
+	}
+	tactics{
+		Tactic UseRuntimeBinding {
+			QA: MODIFIABILITY 
+			rationale: "An architecture that is suitably equipped to accommodate modifications late in the life cycle will, on average, cost less than an architecture that forces the same modification to be made earlier. " 
+			stimulus: "Changes arrive"
+			response: "Changes made within time and budget"
+			viewpoint: "Functional"
+		},
+		Tactic IncreaseAvailableResources {
+			QA: PERFORMANCE 
+			rationale: "Faster processors, additional processors, additional memory, and faster networks all have the potential for reducing latency" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Deployment"
+		}
+	}
+}

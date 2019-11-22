@@ -1,0 +1,67 @@
+DeploymentView UC1DV
+use inputPackage UC1Input
+use functionalView UC1FVModel { 
+	artifacts{
+		Artifact DelayArtifact {
+			component : DelayPredictor
+			sensitivityPoint :  UC1_SP1
+		}, 
+		Artifact HTTPArtifact {
+			component: HttpRequest
+		},
+		Artifact InMsgArtifact {
+			connector :In_MSG
+		},
+		Artifact OutMsgArtifact {
+			connector :In_MSG
+		}
+	}
+	devs{
+		Device a {
+			host: "a" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device b {
+			host: "b" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device cx {
+			host: "c" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+		}
+	}
+	deployments{
+		Deployment EstimatorDepl {
+			replicas: 3
+			pods {
+				Pod EstimatorPod{ 
+					envs{
+						ExecEnv EstimatorEnv{
+							deployedArtifacts{DelayArtifact}
+							image: "jpmml/openscoring"
+							cpu_req: 0.3
+							ports [8081]	
+						}
+					} 
+				}	
+			}
+		},
+		Deployment KafkaDep {
+			replicas: 3
+			pods {
+				Pod KafkaPod{ 
+					envs{
+						ExecEnv KafkaEnv{
+							deployedArtifacts{InMsgArtifact,OutMsgArtifact}
+							image: "bitnami/kafka"
+							cpu_req: 0.3
+							ports [9092]
+						}
+					} 
+				}	
+			}
+		}
+	}
+}

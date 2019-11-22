@@ -21,7 +21,7 @@ use functionalView UC4FV {
 			cpu: 2 storage: 100 memory: 8
 			
 		}, 
-		Device cx {
+		Device c {
 			host: "c" type:MEDIUM
 			cpu: 2 storage: 100 memory: 8
 		}

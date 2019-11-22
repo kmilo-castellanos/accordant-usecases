@@ -27,7 +27,7 @@ use inputPackage UC3Inputs{
 	    		Role e1_role_out:OUT -> adsb_in
 	      }
 	    },
-	    Event EventQueue2{
+	    Event EventQueue2 {
 	    	delivery: EXACTLY_ONE
 		buffering: BUFFERED
 		props:"topic:nmacout" 	

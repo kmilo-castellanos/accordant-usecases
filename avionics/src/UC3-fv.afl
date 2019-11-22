@@ -1,7 +1,7 @@
 FunctionalView UC3FVModel
 use inputPackage UC3Inputs{
 	Components {
-		Ingestor HttpRequest {
+		Ingestor Collector {
 			type : HTTP
 			procModel:MICROBATCH conn:"https://adsbexchange-com1.p.rapidapi.com/json/lat/40.64240788194318/lon/-73.78122048080672/dist/25/"
 			format:"JSON" 
@@ -9,24 +9,31 @@ use inputPackage UC3Inputs{
 		},
 		Estimator NMACDetector {
 		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
-		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
+		  	ports:{Port adsb_in:REQUIRED, Port nmac_out:PROVIDED}
 		}, 
 		Sink Writer {
 		  type:DATABASE
-		  procModel:BATCH conn:"hdfs://ads-b/output/" format:"CSV"
-		  ports: {Port wri_in:REQUIRED}
+		  procModel:MICROBATCH conn:"mongodb://<USER>:<PASS>@<HOST>:27017/nmac"
+		  ports: {Port nmac_in:REQUIRED}
 		}
 	}
 	Connectors {
-		ProcCall CallDetect { 
+		Event EventQueue1 {
+		delivery: EXACTLY_ONE
+		buffering: BUFFERED
+		props:"topic:nmacout"
 	    roles : {
-	    		Role cd_src:IN  -> adsb,
-	    		Role cd_dst:OUT -> nmac_in
+	    		Role e1_role_in:IN  -> adsb,
+	    		Role e1_role_out:OUT -> adsb_in
 	      }
 	    },
-	    ProcCall CallClustering { 
-	      roles : {
-	        Role cc_src:IN  -> nmac_out
+	    Event EventQueue2{
+	    	delivery: EXACTLY_ONE
+		buffering: BUFFERED
+		props:"topic:nmacout" 	
+		roles : {
+	        Role e2_role_in:IN  -> nmac_out,
+	        	Role e2_role_out:OUT -> nmac_in
       	}
      }
   }

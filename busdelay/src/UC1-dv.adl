@@ -10,10 +10,10 @@ use functionalView UC1FVModel {
 			component: HttpRequest
 		},
 		Artifact InMsgArtifact {
-			connector :In_MSG
+			connector :InMSG
 		},
 		Artifact OutMsgArtifact {
-			connector :In_MSG
+			connector :OutMSG
 		}
 	}
 	devs{

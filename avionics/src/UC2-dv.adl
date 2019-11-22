@@ -59,7 +59,7 @@ use functionalView UC2FVModel {
 					envs{
 						ExecEnv SparkMEnv{
 							deployedArtifacts{
-								NMACArtifact,ReaderArtifact,
+								ReaderArtifact,NMACArtifact,
 								ClusteringArtifact,WriterArtifact 
 							}
 							image: "ramhiser/spark:2.0.1"

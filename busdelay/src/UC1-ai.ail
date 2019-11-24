@@ -5,7 +5,7 @@ InputPackage UC1Input{
 		 	stimulus: "A new version of the predictive model trained and evaluated by the data scientist" 
 		  	environment: "Normal mode"
 		  	response: "The model must be updated in the system at runtime in 10 seconds"
-		 	measure: LATENCY between 0.1 and 10.0 in SECONDS
+		 	measure: UPDATETIME between 0.1 and 10.0 in SECONDS
 		},
 		QS UC1_QS2 {
 		 	QA:PERFORMANCE

@@ -4,7 +4,6 @@ use functionalView UC4FV {
 	artifacts{
 		Artifact ENSOArtifact {
 			component : ENSOPredictor
-			sensitivityPoint : UC4_SP1
 		}	
 	}
 	devs{
@@ -41,6 +40,8 @@ use functionalView UC4FV {
 					} 
 				}	
 			}
+			sensitivityPoint : UC4_SP1
+			
 		},
 		Deployment SparkMasterDep {
 			replicas: 1

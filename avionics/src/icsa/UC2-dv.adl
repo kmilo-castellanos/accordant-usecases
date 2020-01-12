@@ -1,0 +1,94 @@
+DeploymentView UC3DV
+use inputPackage UC3Inputs
+use functionalView UC3FVModel { 
+	artifacts{
+		Artifact ReaderArtifact {
+			component : Collector
+			sensitivityPoint : UC3_SP1
+		}, 
+		Artifact NMACArtifact {
+			component: NMACDetector
+		},
+		Artifact WriterArtifact {
+			component: Writer
+		},
+		Artifact MsgInArtifact{
+			connector: EventQueue1
+		},
+		Artifact MsgOutArtifact{
+			connector: EventQueue2
+		}
+	}
+	devs{
+		Device a {
+			host: "a" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		},
+		Device b {
+			host: "b" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		},
+		Device cx {
+			host: "c" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+		}
+	}
+	deployments{
+		Deployment SparkWorkerDep {
+			replicas: 3
+			pods {
+				Pod SparkWPod{ 
+					envs{
+						ExecEnv SparkWEnv{
+							deployedArtifacts{
+								NMACArtifact,
+								WriterArtifact								 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [8081]
+							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		},Deployment SparkMasterDep {
+			replicas: 1
+			pods {
+				Pod SparkMPod{
+					envs{
+						ExecEnv SparkMEnv{
+							deployedArtifacts{
+								NMACArtifact,ReaderArtifact,
+								WriterArtifact 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [7077,8080]
+							commands ["/spark-master"]
+						}
+					} 
+				}	
+			}
+		},
+		Deployment KafkaDep {
+			replicas: 2
+			pods {
+				Pod KafkaPod{ 
+					envs{
+						ExecEnv KafkaEnv{
+							deployedArtifacts{
+								MsgInArtifact,MsgOutArtifact 
+							}
+							image: "bitnami/kafka"
+							cpu_req: 0.3
+							ports [9092]
+						}
+					} 
+				}	
+			}
+		}
+	}
+}

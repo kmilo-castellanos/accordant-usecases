@@ -1,0 +1,75 @@
+DeploymentView UC1DV
+use inputPackage UC1Inputs
+use functionalView UC1FVModel { 
+	artifacts{
+		Artifact ReaderArtifact {
+			component : JsonReader
+			sensitivityPoint : UC1_SP1
+		}, 
+		Artifact NMACArtifact {
+			component: NMACDetector
+		},
+		Artifact ClusteringArtifact {
+			component: NMACClustering
+		},
+		Artifact WriterArtifact {
+			component: HDFSWriter
+		}
+	}
+	devs{
+		Device a {
+			host: "a" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device b {
+			host: "b" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+			
+		}, 
+		Device c {
+			host: "c" type:MEDIUM
+			cpu: 2 storage: 100 memory: 8
+		}
+	}
+	deployments{
+		Deployment SparkWorkerDep {
+			replicas: 3
+			pods {
+				Pod SparkWPod{ 
+					envs{
+						ExecEnv SparkWEnv{
+							deployedArtifacts{
+								NMACArtifact,ReaderArtifact,
+								ClusteringArtifact,WriterArtifact 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [8081]
+							commands ["/spark-worker"] 
+						}
+					} 
+				}	
+			}
+		},
+		Deployment SparkMasterDep {
+			replicas: 1
+			pods {
+				Pod SparkMPod{ 
+					envs{
+						ExecEnv SparkMEnv{
+							deployedArtifacts{
+								ReaderArtifact,NMACArtifact,
+								ClusteringArtifact,WriterArtifact 
+							}
+							image: "ramhiser/spark:2.0.1"
+							cpu_req: 0.3
+							ports [7077,8080]
+							commands ["/spark-master"] 
+						}
+					} 
+				}	
+			}
+		}
+	}
+}

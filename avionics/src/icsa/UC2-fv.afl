@@ -1,0 +1,40 @@
+FunctionalView UC3FVModel
+use inputPackage UC3Inputs{
+	Components {
+		Ingestor Collector {
+			type : HTTP
+			procModel:MICROBATCH conn:"https://adsbexchange-com1.p.rapidapi.com/json/lat/40.64240788194318/lon/-73.78122048080672/dist/25/"
+			format:"JSON" 
+			ports: { Port adsb:PROVIDED}
+		},
+		Estimator NMACDetector {
+		  	procModel:MICROBATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
+		  	ports:{Port adsb_in:REQUIRED, Port nmac_out:PROVIDED}
+		}, 
+		Sink Writer {
+		  type:DATABASE
+		  procModel:MICROBATCH conn:"mongodb://<USER>:<PASS>@<HOST>:27017/nmac"
+		  ports: {Port nmac_in:REQUIRED}
+		}
+	}
+	Connectors {
+		Event EventQueue1 {
+		delivery: EXACTLY_ONE
+		buffering: BUFFERED
+		props:"topic:nmacout"
+	    roles : {
+	    		Role e1_role_in:IN  -> adsb,
+	    		Role e1_role_out:OUT -> adsb_in
+	      }
+	    },
+	    Event EventQueue2 {
+	    	delivery: EXACTLY_ONE
+		buffering: BUFFERED
+		props:"topic:nmacout" 	
+		roles : {
+	        Role e2_role_in:IN  -> nmac_out,
+	        	Role e2_role_out:OUT -> nmac_in
+      	}
+     }
+  }
+}  

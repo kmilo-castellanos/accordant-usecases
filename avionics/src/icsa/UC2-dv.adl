@@ -1,10 +1,10 @@
 DeploymentView UC3DV
-use inputPackage UC3Inputs
+use project UC3
 use functionalView UC3FVModel { 
 	artifacts{
 		Artifact ReaderArtifact {
 			component : Collector
-			sensitivityPoint : UC3_SP1
+			decision : UC3_SP1
 		}, 
 		Artifact NMACArtifact {
 			component: NMACDetector

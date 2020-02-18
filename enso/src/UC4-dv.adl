@@ -1,5 +1,5 @@
 DeploymentView UC4DV
-use inputPackage UC4Input
+use project UC4
 use functionalView UC4FV { 
 	artifacts{
 		Artifact ENSOArtifact {
@@ -40,7 +40,7 @@ use functionalView UC4FV {
 					} 
 				}	
 			}
-			sensitivityPoint : UC4_SP1
+			decision : UC4_SP1
 			
 		},
 		Deployment SparkMasterDep {

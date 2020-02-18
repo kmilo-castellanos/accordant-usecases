@@ -1,4 +1,4 @@
-InputPackage UC4Input{
+Project UC4{
 	QScenarios {
 		QS UC4_QS1 {
 		 	QA: PERFORMANCE
@@ -9,10 +9,10 @@ InputPackage UC4Input{
 		} 
 	} 
 	analyzedQScenarios{
-		AQS UC4_AQS1 of UC4_QS1 {
+		AQS UC4_AQS1 of UC4_QS1 { 
 			reasoning :"This QS requires to estimate the air temperature over an inmutable large dataset using batch processing in 60 minutes"
-			Sensitivity_Points{
-				SensitivityPoint UC4_SP1{
+			ArchDecisions{
+				Decision UC4_SP1{
 					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline"			
 					code: "UC4-SP1"
 					tactics 	(IntroduceConcurrency,IncreaseAvailableResources)

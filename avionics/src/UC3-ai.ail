@@ -1,4 +1,4 @@
-InputPackage UC3Inputs{
+Project UC3{
 	QScenarios {
 		QS UC3_QS1 {
 			QA:PERFORMANCE
@@ -11,8 +11,8 @@ InputPackage UC3Inputs{
 	analyzedQScenarios{
 		AQS UC3_AQS1 of UC3_QS1   {
 			reasoning :"This QS requires to detect NMAC events from flights data (ADS-B) collected by API requests in 60 minutes"
-			Sensitivity_Points{
-				SensitivityPoint UC3_SP1{
+			ArchDecisions{
+				Decision UC3_SP1{
 					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected latency"
 					code: "UC3-SP1"
 					tactics 	(IntroduceConcurrency, IncreaseAvailableResources)

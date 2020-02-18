@@ -1,5 +1,5 @@
 FunctionalView UC3FVModel
-use inputPackage UC3Inputs{
+use project UC3{
 	Components {
 		Ingestor Collector {
 			type : HTTP

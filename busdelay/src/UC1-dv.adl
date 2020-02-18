@@ -1,10 +1,10 @@
 DeploymentView UC1DV
-use inputPackage UC1Input
+use project UC1
 use functionalView UC1FVModel { 
 	artifacts{
 		Artifact DelayArtifact {
 			component : DelayPredictor
-			sensitivityPoint :  UC1_SP1
+			decision :  UC1_SP1
 		}, 
 		Artifact HTTPArtifact {
 			component: HttpRequest

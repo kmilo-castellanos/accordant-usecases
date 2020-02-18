@@ -1,10 +1,10 @@
 DeploymentView UC1DV
-use inputPackage UC1Inputs
+use project UC1
 use functionalView UC1FVModel { 
 	artifacts{
 		Artifact ReaderArtifact {
 			component : JsonReader
-			sensitivityPoint : UC1_SP1
+			decision : UC1_SP1
 		}, 
 		Artifact NMACArtifact {
 			component: NMACDetector

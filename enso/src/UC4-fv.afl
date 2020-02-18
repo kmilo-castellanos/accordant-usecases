@@ -1,14 +1,14 @@
 FunctionalView UC4FV
-use inputPackage UC4Input{
+use project UC4{
   Components {  
-    Ingestor CSVReader {
+    	Ingestor CSVReader {
     	  type: HDFS
       procModel:BATCH conn:"hdfs://data/enso.csv" format:"CSV" 
       ports: { Port csv:PROVIDED}
     }, 
     Estimator ENSOPredictor { 
       procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/ElNinoPolReg.pmml"  
-      sensitivityPoint: UC4_SP1 
+      decision: UC4_SP1
       ports:{Port enso_in:REQUIRED, Port enso_out:PROVIDED}
     },
     Sink HDFSWriter {

@@ -1,5 +1,5 @@
 FunctionalView UC1FVModel
-use inputPackage UC1Inputs{
+use project UC1{
 	Components {
 		Ingestor JsonReader {
 			type:HDFS
@@ -8,7 +8,7 @@ use inputPackage UC1Inputs{
 		},
 		Estimator NMACDetector {
 		  	procModel:BATCH  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/NMACTreeModel.pmml"
-		  	sensitivityPoint: UC1_SP1
+		  	decision: UC1_SP1
 		  	ports:{Port nmac_in:REQUIRED, Port nmac_out:PROVIDED}
 		}, 
 		Estimator NMACClustering {

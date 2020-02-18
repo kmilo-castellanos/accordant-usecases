@@ -1,4 +1,4 @@
-InputPackage UC1Input{
+Project UC1{
 	QScenarios {
 		QS UC1_QS1 {
 		 	QA:MODIFIABILITY
@@ -15,12 +15,13 @@ InputPackage UC1Input{
 		 	measure: LATENCY between 0.1 and 2.0 in SECONDS
 		}
 	
-	} 
+	}
 	analyzedQScenarios{
 		AQS UC1_AQS1 of UC1_QS1 {
 			reasoning :"This QS constraint the time to update a new model version to 10 secondas in production environment"
-			Sensitivity_Points{
-				SensitivityPoint UC1_SP1{
+			ArchDecisions{
+				Decision UC1_SP1{
+					isSensitivityPoint
 					rationale: "To implement a service to upgrade a model version at runtime, reduce the updating time"			
 					code: "UC1-SP1"
 					tactics 	(UseRuntimeBinding)
@@ -29,8 +30,9 @@ InputPackage UC1Input{
 		},
 		AQS UC1_AQS2 of UC1_QS2 {
 			reasoning :"This QS limits to 2 seconds the delay estimation from buses live data"
-			Sensitivity_Points{
-				SensitivityPoint UC1_SP2{
+			ArchDecisions{
+				Decision UC1_SP2{
+					isSensitivityPoint
 					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline"			
 					code: "UC1-SP1"
 					tactics 	(IncreaseAvailableResources)

@@ -1,4 +1,4 @@
-InputPackage UC1Inputs{
+Project UC1{
 	QScenarios {
 		QS UC1_QS1 {
 			QA:PERFORMANCE
@@ -12,8 +12,8 @@ InputPackage UC1Inputs{
 		AQS UC1_AQS1 of UC1_QS1   {
 			reasoning :"This QS requires to assign NMAC events to risk clusters 
 				over inmutable large dataset in 60 minutes using batch processing"
-			Sensitivity_Points{
-				SensitivityPoint UC1_SP1{
+			ArchDecisions{
+				Decision UC1_SP1{
 					rationale: "To introduce concurrent/parallel processing can 
 						reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected latency"
 					code: "UC1-SP1"

@@ -1,5 +1,5 @@
 FunctionalView UC2FVModel
-use inputPackage UC2Inputs{
+use project UC2{
 	Components {
 		Ingestor JsonReader {
 			type:HDFS

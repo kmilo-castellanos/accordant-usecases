@@ -1,5 +1,5 @@
 FunctionalView UC1FVModel
-use inputPackage UC1Input{
+use project UC1{
 	Components {
 		Ingestor HttpRequest {
 			type : HTTP
@@ -9,7 +9,7 @@ use inputPackage UC1Input{
 		},
 		Estimator DelayPredictor {
 		  	procModel:STREAM  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
-		  	sensitivityPoint:UC1_SP1
+		  	decision : UC1_SP1
 		  	ports:{Port delay_in:REQUIRED, Port delay_out:PROVIDED}
 		},
 		Sink Writer {

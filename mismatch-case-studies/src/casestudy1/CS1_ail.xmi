@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ASCII"?>
+<accordant_rq:Project xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:accordant_rq="http://uniandes.accordant.requirement" name="CS1">
+  <scenarios measure="LATENCY" minValue="0.1" maxValue="5.0" unit="SECONDS" qAttribute="PERFORMANCE" stimulus="Incoming bus live data report from Translink data for micro-batch delay estimation" environment="Normal mode" name="CS1_QS1" response="The system must estimate delay buses in less than 2 seconds"/>
+  <tactics name="IncreaseAvailableResources" qAttribute="PERFORMANCE" rationale="Faster processors, additional processors, additional memory, and faster networks all have the potential for reducing latency" stimulus="Events arrive" response="Response generated within time constraints" viewpoint="Deployment"/>
+  <analyzedQs qs="CS1_QS1" reasoning="This QS limits to 5 seconds the delay estimation from buses live data" name="CS1_AQS2">
+    <decisions name="CS1_D1" rationale="To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline" code="CS1_D1" appliedTactics="//@tactics.0" isSensitivityPoint="true"/>
+  </analyzedQs>
+</accordant_rq:Project>

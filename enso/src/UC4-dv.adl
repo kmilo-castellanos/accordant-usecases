@@ -4,6 +4,7 @@ use functionalView UC4FV {
 	artifacts{
 		Artifact ENSOArtifact {
 			component : ENSOPredictor
+			technology: Spark
 		}	
 	}
 	devs{

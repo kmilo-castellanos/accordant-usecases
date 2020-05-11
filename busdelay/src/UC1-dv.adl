@@ -4,16 +4,20 @@ use functionalView UC1FVModel {
 	artifacts{
 		Artifact DelayArtifact {
 			component : DelayPredictor
+			technology: Spark
 			decision :  UC1_SP1
 		}, 
 		Artifact HTTPArtifact {
 			component: HttpRequest
+			technology: Spark
 		},
 		Artifact InMsgArtifact {
 			connector :InMSG
+			technology: Spark
 		},
 		Artifact OutMsgArtifact {
 			connector :OutMSG
+			technology: Spark
 		}
 	}
 	devs{

@@ -20,7 +20,7 @@ use project UC1{
 	}
 	Connectors {
 		Event InMSG {
-		delivery: EXACTLY_ONE
+		delivery: EXACTLY_ONCE
 		buffering: BUFFERED	
 		props:"topic:delayin" 
 	    roles : { 
@@ -30,7 +30,7 @@ use project UC1{
 	      
 	    },
 	    Event OutMSG {
-	    	delivery: EXACTLY_ONE
+	    	delivery: EXACTLY_ONCE
 		buffering: BUFFERED
 	    	props:"topic:delayout" 	
 	      roles : {

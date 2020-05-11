@@ -4,16 +4,23 @@ use functionalView UC1FVModel {
 	artifacts{
 		Artifact ReaderArtifact {
 			component : JsonReader
+			technology: Spark
 			decision : UC1_SP1
 		}, 
 		Artifact NMACArtifact {
 			component: NMACDetector
+			technology: Spark
+
 		},
 		Artifact ClusteringArtifact {
 			component: NMACClustering
+			technology: Spark
+
 		},
 		Artifact WriterArtifact {
 			component: HDFSWriter
+			technology: Spark
+
 		}
 	}
 	devs{

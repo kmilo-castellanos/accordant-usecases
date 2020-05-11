@@ -4,19 +4,24 @@ use functionalView UC3FVModel {
 	artifacts{
 		Artifact ReaderArtifact {
 			component : Collector
+			technology: Spark
 			decision : UC3_SP1
 		}, 
 		Artifact NMACArtifact {
 			component: NMACDetector
+			technology: Spark
 		},
 		Artifact WriterArtifact {
 			component: Writer
+			technology: Spark
 		},
 		Artifact MsgInArtifact{
 			connector: EventQueue1
+			technology: Kakfa
 		},
 		Artifact MsgOutArtifact{
 			connector: EventQueue2
+			technology: Kakfa
 		}
 	}
 	devs{

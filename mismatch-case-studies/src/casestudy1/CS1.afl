@@ -1,0 +1,74 @@
+FunctionalView CS1FVModel
+use project CS1{
+	Components {
+		Ingestor HttpRequest {
+			type : HTTP
+			procModel:STREAM conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
+			format:"JSON" 
+			ports: {Port busdata:PROVIDED
+				fields:{
+		  			stopId:"Integer" order 1, 
+		  			routeID:"Integer" order 2, 
+		  			weekDay:"Short" order 3, 
+		  			timeWindow: "Short" order 4,
+		  			avgDelay:"Float" order 5
+		  		}
+			}
+		},
+		Transformer StreamAvg {
+		  	procModel:STREAM  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
+		  	decision : CS1_D1
+		  	ports:{Port sAvg_prov:PROVIDED, Port sAvg_req:REQUIRED 
+		  		fields:{
+		  			stopId_:"Integer" order 1, 
+		  			routeID_:"Integer" order 2, 
+		  			weekDay_:"Short" order 3, 
+		  			timeWindow_: "Date" order 4,
+		  			avgDelay_:"Float" order 5
+		  		}
+		  	}
+		},
+		Transformer BatchAvg {
+		  	procModel:STREAM  pmml:"file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml" 
+		  	decision : CS1_D1
+		  	ports:{Port bAvg_req:REQUIRED, Port bAvg_prov:PROVIDED}
+		},
+		Sink SWriter {
+		  type:DATABASE
+		  procModel:STREAM conn:"mongodb://<USER>:<PASS>@<HOST>:27017/streamdelay"
+		  ports: {Port sWri_req:REQUIRED}  
+		},
+		Sink BWriter {
+		  type:DATABASE
+		  procModel:STREAM conn:"mongodb://<USER>:<PASS>@<HOST>:27017/batchdelay"
+		  ports: {Port bWri_req:REQUIRED}  
+		}
+	}
+	Connectors {
+		Event InMSG {
+		delivery: EXACTLY_ONCE
+		buffering: BUFFERED	
+		props:"topic:delayin" 
+	    roles : { 
+	    		Role in_ing:IN  -> busdata,
+	    		Role sout_ing:OUT -> sAvg_req,
+	    		Role bout_ing:OUT -> bAvg_req	      
+	    		}
+	    },
+	    Event OutMSG {
+	    	delivery: EXACTLY_ONCE
+		buffering: BUFFERED
+	    	props:"topic:sdelayout" 	
+	      roles : {
+	        Role in_trans:IN  -> sAvg_prov,
+	        Role out_trans:OUT  -> sWri_req 
+	        }
+      	},
+	    ProcCall BOutMSG {
+	      roles : {
+	        Role bout_in:IN  -> bAvg_prov,
+	        Role bout_out:OUT  -> bWri_req
+      		}
+     	}
+  	}
+}  

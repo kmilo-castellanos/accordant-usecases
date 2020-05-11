@@ -1,0 +1,35 @@
+Project CS1{
+	
+	QScenarios {
+		QS CS1_QS1 {
+		 	QA:PERFORMANCE
+		 	stimulus: "Incoming bus live data report from Translink data for micro-batch delay estimation" 
+		  	environment: "Normal mode"
+		  	response: "The system must estimate delay buses in less than 2 seconds"
+		 	measure: LATENCY between 0.1 and 5.0 in SECONDS
+		}
+	
+	}
+	analyzedQScenarios{
+		AQS CS1_AQS2 of CS1_QS1 {
+			reasoning :"This QS limits to 5 seconds the delay estimation from buses live data"
+			ArchDecisions{
+				Decision CS1_D1{
+					isSensitivityPoint
+					rationale: "To introduce concurrent/parallel processing can reduce the processing time by reducing blocked time. Parallel computing and increasing resources can reduce the time to achieve the expected deadline"			
+					code: "CS1_D1"
+					tactics 	(IncreaseAvailableResources)
+				}
+			}		
+		}
+	}
+	tactics{
+		Tactic IncreaseAvailableResources {
+			QA: PERFORMANCE 
+			rationale: "Faster processors, additional processors, additional memory, and faster networks all have the potential for reducing latency" 
+			stimulus: "Events arrive"
+			response: "Response generated within time constraints"
+			viewpoint: "Deployment"
+		}
+	}
+}

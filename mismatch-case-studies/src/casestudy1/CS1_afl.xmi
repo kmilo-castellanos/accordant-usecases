@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ASCII"?>
+<accordant_fv:FunctionalView xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:accordant_fv="http://uniandes.accordant.functional" name="CS1FVModel">
+  <conns xsi:type="accordant_fv:Event" name="InMSG" delivery="EXACTLY_ONCE" props="topic:delayin">
+    <roles type="IN" name="in_ing" port="busdata"/>
+    <roles name="sout_ing" port="sAvg_req"/>
+    <roles name="bout_ing" port="bAvg_req"/>
+  </conns>
+  <conns xsi:type="accordant_fv:Event" name="OutMSG" delivery="EXACTLY_ONCE" props="topic:sdelayout">
+    <roles type="IN" name="in_trans" port="sAvg_prov"/>
+    <roles name="out_trans" port="sWri_req"/>
+  </conns>
+  <conns xsi:type="accordant_fv:ProcedureCall" name="BOutMSG">
+    <roles type="IN" name="bout_in" port="bAvg_prov"/>
+    <roles name="bout_out" port="bWri_req"/>
+  </conns>
+  <comps xsi:type="accordant_fv:Ingestor" name="HttpRequest" conn="https://api.translink.ca/rttiapi/v1/stops/&lt;STOP>/estimates?apikey=&lt;APIKEY>" format="JSON">
+    <ports type="PROVIDED" name="busdata">
+      <fields name="stopId" dtype="Integer" order="1"/>
+      <fields name="routeID" dtype="Integer" order="2"/>
+      <fields name="weekDay" dtype="Short" order="3"/>
+      <fields name="timeWindow" dtype="Short" order="4"/>
+      <fields name="avgDelay" dtype="Float" order="5"/>
+    </ports>
+  </comps>
+  <comps xsi:type="accordant_fv:Transformer" name="StreamAvg" pmml="file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml">
+    <ports type="PROVIDED" name="sAvg_prov"/>
+    <ports name="sAvg_req">
+      <fields name="stopId_" dtype="Integer" order="1"/>
+      <fields name="routeID_" dtype="Integer" order="2"/>
+      <fields name="weekDay_" dtype="Short" order="3"/>
+      <fields name="timeWindow_" dtype="Date" order="4"/>
+      <fields name="avgDelay_" dtype="Float" order="5"/>
+    </ports>
+    <decision href="CS1.ail#CS1_D1"/>
+  </comps>
+  <comps xsi:type="accordant_fv:Transformer" name="BatchAvg" pmml="file:////Users/kmilo/Documents/Desarrollo/pmml-models/DelayRegTree.pmml">
+    <ports name="bAvg_req"/>
+    <ports type="PROVIDED" name="bAvg_prov"/>
+    <decision href="CS1.ail#CS1_D1"/>
+  </comps>
+  <comps xsi:type="accordant_fv:Sink" name="SWriter" conn="mongodb://&lt;USER>:&lt;PASS>@&lt;HOST>:27017/streamdelay" type="DATABASE">
+    <ports name="sWri_req"/>
+  </comps>
+  <comps xsi:type="accordant_fv:Sink" name="BWriter" conn="mongodb://&lt;USER>:&lt;PASS>@&lt;HOST>:27017/batchdelay" type="DATABASE">
+    <ports name="bWri_req"/>
+  </comps>
+  <project href="CS1.ail#CS1"/>
+</accordant_fv:FunctionalView>

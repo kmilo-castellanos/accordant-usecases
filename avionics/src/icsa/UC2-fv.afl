@@ -19,7 +19,7 @@ use project UC3{
 	}
 	Connectors {
 		Event EventQueue1 {
-		delivery: EXACTLY_ONE
+		delivery: EXACTLY_ONCE
 		buffering: BUFFERED
 		props:"topic:nmacout"
 	    roles : {
@@ -28,7 +28,7 @@ use project UC3{
 	      }
 	    },
 	    Event EventQueue2 {
-	    	delivery: EXACTLY_ONE
+	    	delivery: EXACTLY_ONCE
 		buffering: BUFFERED
 		props:"topic:nmacout" 	
 		roles : {

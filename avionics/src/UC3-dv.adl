@@ -48,6 +48,7 @@ use functionalView UC3FVModel {
 			replicas: 3
 			pods {
 				Pod SparkWPod{ 
+					device: a
 					envs{
 						ExecEnv SparkWEnv{
 							deployedArtifacts{

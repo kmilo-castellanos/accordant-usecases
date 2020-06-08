@@ -1,9 +1,10 @@
 FunctionalView CS1FVModel
 use project CS1{
 	Components {
-		Ingestor HttpRequest {
+		Ingestor DataRequest {
 			type : HTTP
-			procModel:STREAM conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
+			procModel:STREAM delivery : EXACTLY_ONCE 
+			conn:"https://api.translink.ca/rttiapi/v1/stops/<STOP>/estimates?apikey=<APIKEY>" 
 			format:"JSON" 
 			ports: {Port busdata:PROVIDED
 				fields:{
